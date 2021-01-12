@@ -5,40 +5,40 @@ using UnityEngine;
 
 public class PlayerInteractComponent : MonoBehaviour
 {
-    List<InteractableComponent> nearbyInteractables = new List<InteractableComponent>();
+    InteractType interactType = InteractType.None;
+
+    SimpleObserver<InteractType> observer;
     void Start()
     {
-
+        observer = new SimpleObserver<InteractType>(InteractButtonHandler.Instance, OnInteractButtonPressed);
     }
-
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.K))
+        if (Input.GetMouseButtonDown(0) && interactType != InteractType.None)
         {
-            HandleInteraction();
+            HandleClick();
+        }
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            interactType = InteractType.None;
         }
     }
 
-    private void HandleInteraction()
+    void OnInteractButtonPressed(InteractType type)
     {
-        if (nearbyInteractables.Count > 0)
+        interactType = type;
+    }
+
+    private void HandleClick()
+    {
+        RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
+
+        if (hit.collider != null)
         {
-            if (nearbyInteractables.Count > 1) Debug.LogWarning("Interacting with multiple objects, only handling one of them");
-            var comp = nearbyInteractables[0];
-            comp.Interact();
+            Debug.Log("Target Position: " + hit.collider.gameObject.transform.position);
+            var comp = hit.collider.GetComponent<IInteractable>();
+            comp?.Interact(interactType);
         }
 
-
-    }
-
-    private void OnTriggerEnter2D(Collider2D collider)
-    {
-        var comp = collider.GetComponent<InteractableComponent>();
-        if (comp) nearbyInteractables.Add(comp);
-    }
-    private void OnTriggerExit2D(Collider2D collider)
-    {
-        var comp = collider.GetComponent<InteractableComponent>();
-        if (comp) nearbyInteractables.Remove(comp);
     }
 }
