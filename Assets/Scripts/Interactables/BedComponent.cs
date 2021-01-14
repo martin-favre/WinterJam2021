@@ -21,8 +21,6 @@ public class BedComponent : MonoBehaviour, IInteractable
         new Msg("Considering how often you go to the gym, not very likely."),
     });
 
-    int messageIndex = 0;
-
     public void Interact(InteractType type)
     {
         switch (type)

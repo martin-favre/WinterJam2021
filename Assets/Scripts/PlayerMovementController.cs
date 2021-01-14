@@ -7,6 +7,15 @@ public class PlayerMovementController : MonoBehaviour
 
     Vector3 requestedMovement;
     public Vector2 movementSpeed;
+
+    static PlayerMovementController instance;
+
+    public static PlayerMovementController Instance { get => instance; }
+
+    void Awake()
+    {
+        if(instance == null) instance = this;
+    }
     void Start()
     {
 

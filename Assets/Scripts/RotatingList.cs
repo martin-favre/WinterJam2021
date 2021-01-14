@@ -10,6 +10,22 @@ public class RotatingList
     {
         this.insides = insides;
     }
+
+    public void RemoveText(Msg msg)
+    {
+        foreach (var myMsg in insides)
+        {
+            if (msg == myMsg)
+            {
+                insides.Remove(msg);
+                if (messageIndex >= insides.Count)
+                {
+                    messageIndex = 0;
+                }
+                return;
+            }
+        }
+    }
     public string GetNext()
     {
         Msg outMsg = insides[messageIndex];

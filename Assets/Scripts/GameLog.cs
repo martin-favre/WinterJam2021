@@ -19,10 +19,6 @@ public class GameLog : MonoBehaviour
         if(instance == null) instance = this;
     }
 
-    void Start()
-    {
-        
-    }
 
     // Update is called once per frame
     void Update()
