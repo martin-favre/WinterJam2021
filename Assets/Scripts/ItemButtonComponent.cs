@@ -14,6 +14,7 @@ public class ItemButtonComponent : MonoBehaviour
 
     public Item Item { get => item; }
     public Image imageComp;
+    SimpleObserver<List<Item>> observer;
 
     void Awake()
     {
@@ -24,8 +25,19 @@ public class ItemButtonComponent : MonoBehaviour
     }
 
     void Start() {
-        //transform.position = itemButtons[0].transform.position + new Vector3(buttonWidth + spaceBetweenButtons, 0, 0) * indexInUi;
-        //ScrollPanelComponent.Instance.RegisterItemButton(this);
+        observer = new SimpleObserver<List<Item>>(InventoryComponent.Instance, (items) =>
+        {
+            if(indexInUi < items.Count)
+            {
+                if(!gameObject.activeInHierarchy) return;
+                item = items[indexInUi];
+                imageComp = Helpers.GetCompoonentInChildrenExceptParent<Image>(gameObject);
+                imageComp.sprite = ItemImageLoader.Instance.GetItemSprite(item.Type);
+            } else {
+                item = null;
+                imageComp.sprite = null;
+            }
+        });
     }
 
     void ReSortButtons()
@@ -42,11 +54,6 @@ public class ItemButtonComponent : MonoBehaviour
     {
         itemButtons.Remove(this);
         ReSortButtons();
-    }
-    public void SetItem(Item item)
-    {
-        this.item = item;
-        imageComp.sprite = InventoryComponent.Instance.GetItemSprite(item.Type);
     }
 
     public void ClearItem() {

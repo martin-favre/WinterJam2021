@@ -5,8 +5,6 @@ using UnityEngine;
 
 public class FridgeComponent : MonoBehaviour, IInteractable
 {
-    Msg leftoversMsg = new Msg("There's probably still some leftovers inside.", true);
-    Msg itsEmpty = new Msg("The fridge is empty", true);
     RotatingList lookAtMsgs;
 
     RotatingList pickUpMsg;
@@ -16,7 +14,7 @@ public class FridgeComponent : MonoBehaviour, IInteractable
         lookAtMsgs = new RotatingList(new List<Msg>()
     {
         new Msg("Your fridge.", true),
-        leftoversMsg,
+        new Msg("There's probably still some leftovers inside.", true),
         new Msg("You don't feel hungry just yet."),
     });
 
@@ -34,7 +32,14 @@ public class FridgeComponent : MonoBehaviour, IInteractable
         switch (type)
         {
             case InteractType.LookAt:
-                GameLog.Instance.Log(lookAtMsgs.GetNext());
+                if (!Flags.Instance.IsFlagSet(Flags.FlagNames.HasCheese))
+                {
+                    GameLog.Instance.Log(lookAtMsgs.GetNext());
+                }
+                else
+                {
+                    GameLog.Instance.Log("The fridge is empty");
+                }
                 break;
             case InteractType.PickUp:
                 GameLog.Instance.Log(pickUpMsg.GetNext());
@@ -50,9 +55,6 @@ public class FridgeComponent : MonoBehaviour, IInteractable
         if (!Flags.Instance.IsFlagSet(Flags.FlagNames.HasCheese))
         {
             InventoryComponent.Instance.AddItem(new Item(Item.ItemType.Cheese));
-            lookAtMsgs = new RotatingList( new List<Msg>()
-                {itsEmpty}
-            );
             GameLog.Instance.Log("You find a Cheese in the fridge.");
             GameLog.Instance.Log("The fridge is now empty.");
             Flags.Instance.SetFlag(Flags.FlagNames.HasCheese);
