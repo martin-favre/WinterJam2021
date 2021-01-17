@@ -5,7 +5,12 @@ using UnityEngine.SceneManagement;
 
 public class InventoryComponent : IObservable<List<Item>>
 {
-    List<Item> items = new List<Item>();
+    private class SaveData
+    {
+        public List<Item> items = new List<Item>();
+    }
+    
+    SaveData data = new SaveData();
 
     List<IObserver<List<Item>>> observers = new List<IObserver<List<Item>>>();
 
@@ -20,13 +25,13 @@ public class InventoryComponent : IObservable<List<Item>>
 
     public void AddItem(Item item)
     {
-        items.Add(item);
+        data.items.Add(item);
         UpdateObservers();
     }
 
     public void RemoveItem(Item item)
     {
-        items.Remove(item);
+        data.items.Remove(item);
         UpdateObservers();
     }
 
@@ -34,13 +39,13 @@ public class InventoryComponent : IObservable<List<Item>>
     {
         foreach (var obs in observers)
         {
-            obs.OnNext(items);
+            obs.OnNext(data.items);
         }
     }
 
     public IDisposable Subscribe(IObserver<List<Item>> observer)
     {
-        observer.OnNext(items);
+        observer.OnNext(data.items);
         return new GenericUnsubscriber<List<Item>>(observers, observer);
     }
 }

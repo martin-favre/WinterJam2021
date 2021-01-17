@@ -30,7 +30,19 @@ public class BedComponent : MonoBehaviour, IInteractable
                 break;
             case InteractType.PickUp:
                 GameLog.Instance.Log(pickUpMsg.GetNext());
-            break;
+                break;
+        }
+    }
+
+    public void Interact(Item item)
+    {
+        switch (item.Type)
+        {
+            case Item.ItemType.Cheese:
+                GameLog.Instance.Log("Don't put the cheese in bed");
+                break;
+            default:
+                break;
         }
     }
 }

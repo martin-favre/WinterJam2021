@@ -7,19 +7,50 @@ public class PlayerInteractComponent : MonoBehaviour
 {
     InteractType interactType = InteractType.None;
 
-    SimpleObserver<InteractType> observer;
+    SimpleObserver<InteractType> interactButtonObserver;
+
+    static PlayerInteractComponent instance;
+
+    public static PlayerInteractComponent Instance { get => instance; set => instance = value; }
+
+    Item heldItem;
+
+    void Awake()
+    {
+        instance = this;
+    }
+
     void Start()
     {
-        observer = new SimpleObserver<InteractType>(InteractButtonHandler.Instance, OnInteractButtonPressed);
+        interactButtonObserver = new SimpleObserver<InteractType>(InteractButtonHandler.Instance, OnInteractButtonPressed);
     }
     void Update()
     {
-        if (Input.GetMouseButtonDown(0) && interactType != InteractType.None)
+        if (Input.GetMouseButtonDown(0))
         {
-            HandleClick();
+            if (interactType != InteractType.None)
+            {
+                HandleInteractClick();
+            }
+            else if (heldItem != null)
+            {
+                HandleItemClick();
+            }
         }
         if (Input.GetKeyDown(KeyCode.Escape))
         {
+            interactType = InteractType.None;
+            heldItem = null;
+        }
+    }
+
+
+    public void OnItemButtonPressed(Item item)
+    {
+        if (heldItem == null || heldItem.Type != item.Type)
+        {
+            GameLog.Instance.Log("Using the " + item.Type + ".");
+            heldItem = item;
             interactType = InteractType.None;
         }
     }
@@ -27,9 +58,10 @@ public class PlayerInteractComponent : MonoBehaviour
     void OnInteractButtonPressed(InteractType type)
     {
         interactType = type;
+        heldItem = null;
     }
 
-    private void HandleClick()
+    private void HandleInteractClick()
     {
         RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
 
@@ -39,6 +71,18 @@ public class PlayerInteractComponent : MonoBehaviour
             var comp = hit.collider.GetComponent<IInteractable>();
             comp?.Interact(interactType);
         }
-
     }
+    private void HandleItemClick()
+    {
+        RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
+
+        if (hit.collider != null)
+        {
+            Debug.Log("Target Position: " + hit.collider.gameObject.transform.position);
+            var comp = hit.collider.GetComponent<IInteractable>();
+            comp?.Interact(heldItem);
+            heldItem = null;
+        }
+    }
+
 }

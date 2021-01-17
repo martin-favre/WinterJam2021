@@ -1,4 +1,6 @@
 
+using System;
+[Serializable]
 public class Msg
 {
     string message;

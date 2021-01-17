@@ -21,19 +21,22 @@ public class ItemButtonComponent : MonoBehaviour
         itemButtons.Add(this);
         buttonWidth = GetComponent<RectTransform>().rect.width;
         ReSortButtons();
-        
+
     }
 
-    void Start() {
+    void Start()
+    {
         observer = new SimpleObserver<List<Item>>(InventoryComponent.Instance, (items) =>
         {
-            if(indexInUi < items.Count)
+            if (indexInUi < items.Count)
             {
-                if(!gameObject.activeInHierarchy) return;
+                if (!gameObject.activeInHierarchy) return;
                 item = items[indexInUi];
                 imageComp = Helpers.GetCompoonentInChildrenExceptParent<Image>(gameObject);
                 imageComp.sprite = ItemImageLoader.Instance.GetItemSprite(item.Type);
-            } else {
+            }
+            else
+            {
                 item = null;
                 imageComp.sprite = null;
             }
@@ -56,8 +59,15 @@ public class ItemButtonComponent : MonoBehaviour
         ReSortButtons();
     }
 
-    public void ClearItem() {
+    public void ClearItem()
+    {
         this.item = null;
         imageComp.sprite = null;
+    }
+
+    public void OnClick()
+    {
+        if (this.item == null) return;
+        PlayerInteractComponent.Instance.OnItemButtonPressed(item);
     }
 }
