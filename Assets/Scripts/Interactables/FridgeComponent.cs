@@ -33,7 +33,7 @@ public class FridgeComponent : MonoBehaviour, IInteractable
 
             data.pickUpMsg = new RotatingList(new List<Msg>()
             {
-                new Msg("You can't pick up your fridge.", true),
+                new Msg("You can't Pick Up your fridge.", true),
                 new Msg("This would be a direct ticket to snap city."),
                 new Msg("Your pickup game is not particularly strong."),
             });
@@ -74,6 +74,8 @@ public class FridgeComponent : MonoBehaviour, IInteractable
             GameLog.Instance.Log("You find a Cheese in the fridge.");
             GameLog.Instance.Log("The fridge is now empty.");
             Flags.Instance.SetFlag(Flags.FlagNames.HasCheese);
+        } else {
+            GameLog.Instance.Log("The fridge is empty");
         }
     }
 
@@ -84,5 +86,6 @@ public class FridgeComponent : MonoBehaviour, IInteractable
                 GameLog.Instance.Log("No need to return the " + item.Type + " just yet.");
             break;
         }
+        SaveManager.Instance.Save(saveKey, data);
     }
 }

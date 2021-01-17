@@ -6,6 +6,7 @@ public class Flags
     public enum FlagNames
     {
         HasCheese,
+        HasIOU,
     }
     HashSet<FlagNames> flags = new HashSet<FlagNames>();
     readonly static Flags instance;

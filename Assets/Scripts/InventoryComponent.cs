@@ -29,9 +29,14 @@ public class InventoryComponent : IObservable<List<Item>>
         UpdateObservers();
     }
 
-    public void RemoveItem(Item item)
+    public void RemoveItem(Item.ItemType type)
     {
-        data.items.Remove(item);
+        foreach(var item in data.items) {
+            if(item.Type == type) {
+                data.items.Remove(item);
+                break;
+            }
+        }
         UpdateObservers();
     }
 

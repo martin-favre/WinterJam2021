@@ -17,7 +17,7 @@ public class BedComponent : MonoBehaviour, IInteractable
 
     RotatingList pickUpMsg = new RotatingList(new List<Msg>()
     {
-        new Msg("You can't pick up your bed.", true),
+        new Msg("You can't Pick Up your bed.", true),
         new Msg("Considering how often you go to the gym, not very likely."),
     });
 
