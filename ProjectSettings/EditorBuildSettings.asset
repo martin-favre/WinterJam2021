@@ -14,4 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/BathroomScene.unity
     guid: 3b51d38ecee003d4ea8d8425d1a2b8d0
+  - enabled: 1
+    path: Assets/Scenes/VictoryScene.unity
+    guid: bf65a3f8b30d4b54294c578ca822e53e
   m_configObjects: {}

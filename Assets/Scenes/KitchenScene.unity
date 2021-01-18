@@ -996,6 +996,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5150886603140890524, guid: cc3037b119fffd64fbf08f0319efd290, type: 3}
+      propertyPath: targetScene
+      value: VictoryScene
+      objectReference: {fileID: 0}
     - target: {fileID: 5150886603140890525, guid: cc3037b119fffd64fbf08f0319efd290, type: 3}
       propertyPath: m_Name
       value: ExitDoor

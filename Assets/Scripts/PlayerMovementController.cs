@@ -28,8 +28,8 @@ public class PlayerMovementController : MonoBehaviour
 
     void ReadMovementInput()
     {
-        requestedMovement.x += Input.GetAxis("Horizontal") * movementSpeed.x;
-        requestedMovement.y += Input.GetAxis("Vertical") * movementSpeed.y;
+        requestedMovement.x = Input.GetAxis("Horizontal") * movementSpeed.x;
+        requestedMovement.y = Input.GetAxis("Vertical") * movementSpeed.y;
     }
 
     void FixedUpdate()

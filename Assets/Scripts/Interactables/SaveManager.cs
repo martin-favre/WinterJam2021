@@ -1,7 +1,10 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
+using UnityEngine.Networking;
 
 public class SaveManager
 {
@@ -11,6 +14,8 @@ public class SaveManager
     static SaveManager instance;
 
     public static SaveManager Instance { get => instance; }
+
+    Dictionary<string, object> saves = new Dictionary<string, object>();
 
     static SaveManager()
     {
@@ -23,33 +28,21 @@ public class SaveManager
     }
     public void Save(string key, object value)
     {
-        FileStream file = File.Open(GetPath(key), FileMode.OpenOrCreate);
-        bf.Serialize(file, value);
-        file.Close();
-
+        saves[key] = value;
     }
 
     public object Load(string key)
     {
-        string path = GetPath(key);
-        if (!File.Exists(path)) return null;
-        FileStream file = File.Open(GetPath(key), FileMode.Open);
-        object retval = null;
-        try
-        {
-            retval = bf.Deserialize(file) as object;
-        }
-        catch(Exception e)
-        {
-            file.Close();
-            Debug.LogWarning(e.Message);
-        }
-        return retval;
+        object obj;
+        saves.TryGetValue(key, out obj);
+        return obj;
     }
 
-    public static void ClearSave() {
+    public static void ClearSave()
+    {
         var hi = Directory.GetFiles(savePath);
-        foreach(var file in hi) {
+        foreach (var file in hi)
+        {
             File.Delete(file);
         }
     }
