@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ClothesPileComponent : MonoBehaviour, IInteractable
+public class LockComponent : MonoBehaviour, IInteractable
 {
     [Serializable]
     private class SaveData
@@ -11,10 +11,11 @@ public class ClothesPileComponent : MonoBehaviour, IInteractable
         public RotatingList lookAtMsg;
         public RotatingList pickUpMsg;
         public RotatingList useMsg;
-        public bool eaten = false;
+        public bool unlocked = false;
     }
     SaveData data = new SaveData();
-    const string saveKey = "ClothesPileComponent";
+    const string saveKey = "LockComponent";
+    public GameObject door;
     void Awake()
     {
         object loadedData = SaveManager.Instance.Load(saveKey);
@@ -22,25 +23,21 @@ public class ClothesPileComponent : MonoBehaviour, IInteractable
         {
             data.pickUpMsg = new RotatingList(
                 new List<Msg>() {
-                    new Msg("The laundry pile is too large to pick up", true),
-                    new Msg("Moving this pile would take all day."),
-                    new Msg("No a chance"),
+                    new Msg("You can't pick up the Lock", true),
+                    new Msg("You try to rip the Lock from the door, unsuccessfully."),
+                    new Msg("You try to seduce the Lock, unsuccessfully."),
                 }
             );
 
             data.lookAtMsg = new RotatingList(
                   new List<Msg>() {
-                  new Msg("A pile of dirty laundry blocking the Bathroom door.", true),
-                  new Msg("You wonder why you decided to put these here."),
-                  new Msg("The smell permeates the room."),
-                  new Msg("Did those undies just move?")
+                  new Msg("The door is locked.", true),
                 }
             );
 
             data.useMsg = new RotatingList(
                     new List<Msg>() {
-                        new Msg("You can't use the laundry pile.", true),
-                        new Msg("Even if you could use it, you don't know if you'd want to."),
+                        new Msg("You can't use Lock like this.", true),
                     }
                 );
         }
@@ -48,8 +45,12 @@ public class ClothesPileComponent : MonoBehaviour, IInteractable
         {
             data = (SaveData)loadedData;
         }
-        if(data.eaten) {
+        if (data.unlocked)
+        {
+            door.GetComponent<Collider2D>().enabled = true;
             gameObject.SetActive(false);
+        } else {
+             door.GetComponent<Collider2D>().enabled = false;
         }
     }
 
@@ -74,19 +75,19 @@ public class ClothesPileComponent : MonoBehaviour, IInteractable
     {
         switch (item.Type)
         {
-            case Item.ItemType.IOU:
-                HandleIOU();
+            case Item.ItemType.Key:
+                HandleKey();
                 break;
         }
         SaveManager.Instance.Save(saveKey, data);
     }
 
-    private void HandleIOU()
+    private void HandleKey()
     {
-        data.eaten = true;
-        InventoryComponent.Instance.RemoveItem(Item.ItemType.IOU);
-        GameLog.Instance.Log("The mouse and its family eats the laundry pile");
+        data.unlocked = true;
+        InventoryComponent.Instance.RemoveItem(Item.ItemType.Key);
+        GameLog.Instance.Log("You unlock the door.");
         gameObject.SetActive(false);
+        door.GetComponent<Collider2D>().enabled = true;
     }
-
 }

@@ -7,6 +7,7 @@ public class Flags
     {
         HasCheese,
         HasIOU,
+        HasKey
     }
     HashSet<FlagNames> flags = new HashSet<FlagNames>();
     readonly static Flags instance;

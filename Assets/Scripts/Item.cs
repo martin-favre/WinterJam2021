@@ -2,7 +2,8 @@ public class Item{
     public enum ItemType {
         Handle, 
         Cheese,
-        IOU
+        IOU,
+        Key
     };
 
     readonly ItemType type;
