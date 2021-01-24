@@ -1,8 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerMovementController : MonoBehaviour
+public class PlayerMovementController : MonoBehaviour, IObservable<Vector2>
 {
 
     Vector3 requestedMovement;
@@ -12,9 +13,13 @@ public class PlayerMovementController : MonoBehaviour
 
     public static PlayerMovementController Instance { get => instance; }
 
+    public Vector2 MaxPossibleMovement { get => movementSpeed; }
+
+    List<IObserver<Vector2>> observers = new List<IObserver<Vector2>>();
+
     void Awake()
     {
-        if(instance == null) instance = this;
+        if (instance == null) instance = this;
     }
     void Start()
     {
@@ -35,6 +40,20 @@ public class PlayerMovementController : MonoBehaviour
     void FixedUpdate()
     {
         transform.position += requestedMovement * Time.deltaTime;
+        UpdateObservers(requestedMovement);
         requestedMovement = Vector3.zero;
+    }
+
+    public void UpdateObservers(Vector2 val)
+    {
+        foreach (var observer in observers)
+        {
+            observer.OnNext(val);
+        }
+    }
+
+    public IDisposable Subscribe(IObserver<Vector2> observer)
+    {
+        return new GenericUnsubscriber<Vector2>(observers, observer);
     }
 }

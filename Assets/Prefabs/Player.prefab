@@ -98,6 +98,7 @@ GameObject:
   - component: {fileID: 2687414177658949913}
   - component: {fileID: 2687414177658949918}
   - component: {fileID: 2687414177658949919}
+  - component: {fileID: 1318606937}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -132,7 +133,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2d69e8044abe364ebe043bc23874bfb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementSpeed: {x: 0.5, y: 0.5}
+  movementSpeed: {x: 5, y: 5}
 --- !u!212 &2687414177658949915
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -173,7 +174,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: -2311659948842064771, guid: ee0ef80cdb87a6a43847583c153c78e9, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -212,18 +213,18 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.03}
+  m_Offset: {x: -0.02, y: -0.08}
   m_SpriteTilingProperty:
-    border: {x: 0.049999997, y: 0.049999997, z: 0.049999997, w: 0.049999997}
+    border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.16, y: 0.16}
+    oldSize: {x: 0.32, y: 0.32}
     newSize: {x: 0.16, y: 0.16}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.08, y: 0.03}
+  m_Size: {x: 0.08, y: 0.12}
   m_EdgeRadius: 0
 --- !u!114 &2687414177658949918
 MonoBehaviour:
@@ -258,3 +259,21 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
+--- !u!114 &1318606937
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2687414177658949912}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b156e9687eaa5044a4f38c7f508f9ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  initialAnimationFrequency: 15
+  sprites:
+  - {fileID: -2311659948842064771, guid: ee0ef80cdb87a6a43847583c153c78e9, type: 3}
+  - {fileID: 7364682651488144517, guid: ee0ef80cdb87a6a43847583c153c78e9, type: 3}
+  - {fileID: -6287787046888575383, guid: ee0ef80cdb87a6a43847583c153c78e9, type: 3}
+  - {fileID: -1182821291677670348, guid: ee0ef80cdb87a6a43847583c153c78e9, type: 3}

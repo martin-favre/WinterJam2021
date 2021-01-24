@@ -30,7 +30,7 @@ public class GameLog : MonoBehaviour
 
     void UpdateShownText()
     {
-        var enumerable = Helpers.TakeLast<string>(logEntries, 6);
+        var enumerable = Helpers.TakeLast<string>(logEntries, 5);
         textComp.text = "";
         foreach(string txt in enumerable) {
             textComp.text += txt + '\n';
